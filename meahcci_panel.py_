@@ -1,0 +1,56 @@
+import bpy
+
+class meahcci_PT_panel(bpy.types.Panel):
+    bl_idname = "meah_PT_panel"
+    bl_label = "Meahcci"
+    bl_category = "Forestry"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+
+    def draw(self, context):
+        layout = self.layout
+
+        box = layout.box()
+        box.prop(self, 'nproductions')
+        box = layout.box()
+        if getattr(self, 'start') == '':
+            box.alert = True
+        box.prop(self, 'start')
+
+        for i in range(self.nproductions):
+            namep = 'prod' + str(i+1)
+            namem = 'mod' + str(i+1)
+            nameq = 'prob' + str(i+1)
+
+            box = layout.box()
+            row = box.row(align=True)
+            if getattr(self, namem) == '' or \
+                getattr(self, namep) == '':
+                    row.alert = True
+            row.prop(self, namem)
+            row.prop(self, namep, text="")
+            row.prop(self, nameq, text="frac")
+
+        box = layout.box()
+        box.label(text="Interpretation section")
+        box.prop(self, 'niterations')
+        box.prop(self, 'seed')
+        box.prop(self, 'angle')
+        box.prop(self, 'tropism')
+        box.prop(self, 'tropismsize')
+        
+        box = layout.box()
+        box.label(text="Fun with geometry")
+        box.prop(self, 'meta_type')
+        box.prop(self, 'meta_radius')
+        box.prop(self, 'meta_resolution')
+        box.prop(self, 'smooth_operator')
+        #box.prop(self,'canopy_gravity')
+        #box.prop(self,'canopy_scale')
+        #box.prop(self,'canopy_height')
+
+        box = layout.box()
+        box.label(text="Family tree")
+        box.prop(self, 'ngenerations')
+        box.prop(self, 'nspecimen')
+        box.prop(self, 'gridstep')

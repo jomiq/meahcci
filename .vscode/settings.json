@@ -1,0 +1,12 @@
+{
+    "powermode.enabled": false,
+    "powermode.enableShake": false,
+
+    "python.autoComplete.extraPaths": [
+        ":~/.local/blender/34/2.81/scripts/modules"
+    ],
+
+    "workbench.colorCustomizations": {
+        "statusBar.background" : "#004534"
+       }
+}
