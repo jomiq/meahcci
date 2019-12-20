@@ -69,7 +69,6 @@ class Turtle:
     def term_plus(self, value=None):
         val = radians(value) if not value is None else self.angle
         r = Matrix.Rotation(val, 4, self.right)
-        #Matrix.rotate()
         self.forward.rotate(r)
         self.up.rotate(r)
         
@@ -182,7 +181,6 @@ class Turtle:
         name=''
         for c in s:
             t = None
-            print(c,name)
             if c == '}':
                 t = self.term_object(name=name[1:])
                 name=''
@@ -193,7 +191,7 @@ class Turtle:
             #    continue
             elif c in self.terminals:
                 t = self.terminals[c]()
-            print('yield',t)
+            #print('yield',t)
             if not t is None:
                 yield t
                 

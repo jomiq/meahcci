@@ -246,6 +246,23 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
         obj = self.add_obj(mesh, context)
         base = obj
 
+        #bpy.context.active_object = obj
+        context.view_layer.objects.active = obj
+        bpy.ops.object.modifier_add(type='SKIN')
+        obj.modifiers[0].use_smooth_shade = False
+        obj.modifiers[0].use_x_symmetry = False
+        #context.active_object.modifiers[0].use_smooth_shade = False
+        #context.active_object.modifiers[0].use_x_symmetry = False
+
+        skinverts = context.active_object.data.skin_vertices[0].data
+
+        for i, v in enumerate(skinverts):
+            v.radius = [self.radii[i], self.radii[i]]
+
+        if self.smooth_operator:
+            bpy.ops.object.modifier_add(type='SUBSURF')
+            context.active_object.modifiers[1].levels = 2
+
         if len(metas) > 0:
             mball = bpy.data.metaballs.new('MetaBall')
             mball.resolution = self.meta_resolution
@@ -299,22 +316,7 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
                 s = self.iterate()
                 obj = self.interpret(s, context)
 
-                #bpy.context.active_object = obj
-                context.view_layer.objects.active = obj
-                bpy.ops.object.modifier_add(type='SKIN')
-                obj.modifiers[0].use_smooth_shade = False
-                obj.modifiers[0].use_x_symmetry = False
-                #context.active_object.modifiers[0].use_smooth_shade = False
-                #context.active_object.modifiers[0].use_x_symmetry = False
-
-                skinverts = context.active_object.data.skin_vertices[0].data
-
-                for i, v in enumerate(skinverts):
-                    v.radius = [self.radii[i], self.radii[i]]
-
-                if self.smooth_operator:
-                    bpy.ops.object.modifier_add(type='SUBSURF')
-                    context.active_object.modifiers[1].levels = 2
+                
 
                 context.active_object.location = (m*self.gridstep, n*self.gridstep, 0.0)
 
