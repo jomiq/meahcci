@@ -15,7 +15,7 @@ bl_info = {
     "name" : "meahcci",
     "author" : "jomik",
     "description" : "",
-    "blender" : (2, 81, 0),
+    "blender" : (2, 80, 0),
     "version" : (0, 0, 1),
     "location" : "View3D",
     "warning" : "",
