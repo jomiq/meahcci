@@ -236,9 +236,7 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
 
             elif isinstance(e, Meta):
                 metas.append(e)
-            
-        
-            
+
         
         mesh = bpy.data.meshes.new('muorra')
         mesh.from_pydata(verts, edges, [])
@@ -246,13 +244,10 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
         obj = self.add_obj(mesh, context)
         base = obj
 
-        #bpy.context.active_object = obj
         context.view_layer.objects.active = obj
         bpy.ops.object.modifier_add(type='SKIN')
         obj.modifiers[0].use_smooth_shade = False
         obj.modifiers[0].use_x_symmetry = False
-        #context.active_object.modifiers[0].use_smooth_shade = False
-        #context.active_object.modifiers[0].use_x_symmetry = False
 
         skinverts = context.active_object.data.skin_vertices[0].data
 
@@ -268,6 +263,7 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
             mball.resolution = self.meta_resolution
             o = bpy.data.objects.new('Meta_Obj', mball)
             context.collection.objects.link(o)
+            o.parent = base
 
             for e in metas:
                 this_ball = mball.elements.new()
@@ -276,30 +272,13 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
                 this_ball.radius = e.radius*self.meta_radius
                 this_ball.co = e.pos + e.forward*this_ball.radius/2
             
-            #bpy.context.scene.update()
             bpy.context.view_layer.update()
-            m = o.to_mesh(preserve_all_data_layers=True)
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.context.view_layer.objects.active = o
+            o.select_set(True)
+            bpy.ops.object.convert(target='MESH')
+        
 
-            can_obj = bpy.data.objects.new('Canopy', m)
-            for p in can_obj.data.polygons:
-                p.use_smooth = False
-
-            context.collection.objects.link(can_obj)
-            context.collection.objects.unlinklink(o)
-            #context.scene.objects.link(can_obj)
-            #context.scene.objects.unlink(o)
-            can_obj.parent = obj
-            
-            
-            
-
-#        for ob in context.scene.objects:
- #           ob.select_set(False)
-  #      base.select_set(True)
-   #     context.scene.objects.active = obj
-        for q in quads:
-            q.parent = base
-        return base
 
 
     # Execution?
@@ -315,9 +294,9 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
                 self.niterations = start_gen + n
                 s = self.iterate()
                 obj = self.interpret(s, context)
-
-                
-
+                bpy.ops.object.select_all(action='DESELECT')
+                bpy.context.view_layer.objects.active = obj
+                obj.select_set(True)
                 context.active_object.location = (m*self.gridstep, n*self.gridstep, 0.0)
 
         self.niterations = start_gen

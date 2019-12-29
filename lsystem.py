@@ -175,7 +175,7 @@ class Turtle:
         
     def interpret(self, s):
         """
-        interpret the iterable s, yield Quad, Edge object or Meta named tuples.
+        interpret the iterable s, yield Quad, Edge BObject or Meta named tuples.
         """
         print('interpret:',s)
         name=''
