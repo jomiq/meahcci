@@ -106,6 +106,7 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
     meta_resolution: FloatProperty(
         name='meta_resolution',
         default=0.2,
+        min=0.2,
         description="Resolution of metaballs")
     
     meta_radius: FloatProperty(
@@ -189,6 +190,7 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
                     self.tropismsize,
                     self.angle,
                     self.seed)
+
         for e in t.interpret(s):
             if isinstance(e, Edge):
                 si, ei = ( verts.index(v)
@@ -237,7 +239,6 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
             elif isinstance(e, Meta):
                 metas.append(e)
 
-        
         mesh = bpy.data.meshes.new('muorra')
         mesh.from_pydata(verts, edges, [])
         mesh.update()
@@ -278,15 +279,13 @@ class meahcci_OT_add_meahcci(bpy.types.Operator):
             o.select_set(True)
             bpy.ops.object.convert(target='MESH')
         
-
+        return base
 
 
     # Execution?
     def execute(self, context):
-
         start_gen = self.niterations
         start_seed = self.seed
-
 
         for m in range(0, self.nspecimen):
             self.seed = start_seed + m
